@@ -1,11 +1,19 @@
 import React from 'react'
 import { Suspense } from "react";
-import Loading from '@/app/loading'
+import Loading from '@/app/(dashboard)/loading'
 import TicketDetails from './TicketDetails';
-import { notFound } from 'next/navigation'
+
+export async function generateMetadata({ params }) {
+    const id = params.id
+    const res = await fetch(`http://localhost:4000/tickets/${id}`)
+    const ticket = await res.json()
+
+    return {
+        title: `Dojo Helpdesk | ${ticket.title}`
+    }
+}
 
 export const dynamicParams = true
-
 
 export async function generateStaticParams() {
     const res = await fetch('http://localhost:4000/tickets')
